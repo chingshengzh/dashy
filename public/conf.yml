@@ -1,0 +1,92 @@
+# 企業資安導覽入口設定檔 (整合版)
+pageInfo:
+  title: 企業資安戰情中心
+  description: Enterprise Security Operations Center
+  navLinks:
+    - title: 系統管理員手冊
+      path: https://你的內部維基網址
+
+appConfig:
+  # 1. 套用你找到的自訂主題名稱
+  theme: newone
+  # 2. 將你提供的 CSS 直接寫入設定檔，免去管理多個檔案的麻煩
+  customCss: |
+    html[data-theme="newone"] {
+      --primary: #87c2d9;
+      --background: #03586e;
+      --background-darker: #05070e35;
+      --item-background: #181c3a80;
+      --item-background-hover: #181c3a99;
+      --item-shadow: 1px 1px 2px #130f23;
+      --item-hover-shadow: 2px 2px 4px #130f23;
+      --item-group-heading-text-color: var(--white);
+      --item-group-heading-text-color-hover: var(--primary);
+    }
+    .is-collapsed {
+      background: var(--item-background);
+      box-shadow: var(--item-shadow);
+    }
+    .is-collapsed:hover {
+      background: var(--item-background-hover);
+      box-shadow: var(--item-hover-shadow);
+    }
+
+sections:
+  # --- 區塊 1：資安例行工作 (對應你想要的捷徑按鈕) ---
+  - name: 🛡️ 資安例行工作與文件
+    icon: fas fa-shield-alt
+    displayData:
+      cols: 2
+    items:
+      - title: ISO 27001 管理規範
+        description: 內部資安規範與表單庫 (未來可連至 MkDocs)
+        icon: fas fa-book
+        url: http://YOUR_WIKI_IP/
+      - title: 防火牆管理後台
+        description: 設備登入入口
+        icon: fas fa-fire-extinguisher
+        url: https://YOUR_FIREWALL_IP/
+        target: newtab
+
+  # --- 區塊 2：系統監控大廳 (整合 Uptime Kuma 與 Grafana) ---
+  - name: 📊 系統監控大廳
+    icon: fas fa-server
+    displayData:
+      rows: 2
+      cols: 2
+    widgets:
+      # Uptime Kuma 綠燈監控
+      - type: uptime-kuma
+        options:
+          hostname: http://YOUR_UPTIME_KUMA_IP:3001
+      # Grafana 圖表 (已修復你提供的網址格式)
+      - type: iframe
+        options:
+          url: "https://grafana.rpi-lite.lan/d/Ss3q6hSZk001/docker-and-os-metrics-for-raspberry-pi-16-april2022?orgId=1&refresh=30s&kiosk"
+          frameHeight: 400
+
+  # --- 區塊 3：資安威脅情報 (使用 RSS Widget) ---
+  - name: 🚨 TWCERT 資安情報即時快訊
+    icon: fas fa-newspaper
+    displayData:
+      cols: 2
+    widgets:
+      - type: rss-feed
+        options:
+          rssUrl: https://www.twcert.org.tw/tw/rss-16-1.xml
+          limit: 6
+
+  # --- 區塊 4：國際時間 (保留自 Crypto 範例，對 IT 人員看 Log 很有用) ---
+  - name: 國際標準時間 (UTC/本地)
+    icon: fas fa-clock
+    displayData:
+      cols: 2
+    widgets:
+      - type: clock
+        options:
+          timeZone: UTC
+          format: en-GB
+      - type: clock
+        options:
+          timeZone: Asia/Taipei
+          format: en-GB
